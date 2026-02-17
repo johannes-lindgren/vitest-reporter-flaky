@@ -1,0 +1,40 @@
+name: Example Workflow
+
+on:
+  pull_request:
+
+jobs:
+  integration-checks:
+    runs-on: ubuntu-latest
+    name: Code Inspection
+    steps:
+      - name: Check out
+        uses: actions/checkout@v3
+      - name: Set up node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 22
+          cache: 'npm'
+          registry-url: 'https://registry.npmjs.org'
+      - name: Install
+        run: npm install --frozen-lockfile
+      - name: Check Code Formatting
+        run: npm run check:formatting
+      - name: Build
+        run: npm run build --workspace=vite-reporter-flakiness
+      - name: Tests
+        run: npm run test --workspace=@repo/app-with-ci
+      - name: Report flakiness
+        # [Placeholder] This is where you would run your flakiness reporter.
+        #  Depending on the results, you can take different actions: send an alert, create an issue, etc.
+        #  In this example, we simply fail the workflow if the flakiness reporter detects any flaky tests.
+        run: |
+          echo "=== Running flakiness reporter ==="
+          # Simulate flakiness detection (replace with actual command)
+          if [ -f "examples/app-with-ci/reports/flaky-tests.json" ]; then
+            echo "Flaky tests detected:"
+            cat examples/app-with-ci/reports/flaky-tests.json
+            exit 1
+          else
+            echo "No flaky tests detected."
+          fi

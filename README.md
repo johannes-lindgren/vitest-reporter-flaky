@@ -11,7 +11,50 @@
 <a href="https://github.com/johannes-lindgren" rel="nofollow"><img src="https://img.shields.io/badge/Author-@johannes--lindgren-blue.svg" alt="Created by Johannes Lindgren"></a>
 </p>
 
-Coming soon...
+This package provides a Vitest reporter that identifies and reports flaky tests.
+
+A test is considered flaky if it fails in at least one run and passes in a retry run.
+
+## Getting Started
+
+Install the package:
+
+```bash
+npm install vite-reporter-flakiness --save-dev
+```
+
+Ensure that you have retries enabled in your Vitest configuration for the reporter to work effectively:
+
+```js// vitest.config.js
+import { defineConfig } from 'vitest/config'
+
+export default defineConfig({
+  test: {
+    // Adjust the number of retries as needed
+    retries: 2,
+  },
+})
+```
+
+Add the reporter to your Vitest configuration:
+
+```js
+// vitest.config.js
+import { defineConfig } from 'vitest/config'
+import { FlakinessReporter } from 'vite-reporter-flakiness'
+
+export default defineConfig({
+  test: {
+    reporters: [
+      new FlakinessReporter({
+        outputFile: 'reports/flaky-tests-report.json',
+      }),
+    ],
+  },
+})
+```
+
+In CI, trigger an alert if the reporter generated the report file.
 
 <br/>
 <div align="center">

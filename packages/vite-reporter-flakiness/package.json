@@ -26,17 +26,20 @@
     "logo.webp"
   ],
   "type": "module",
-  "main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
+  "main": "./dist/esm/index.js",
+  "types": "./dist/esm/index.d.ts",
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.js"
+      "types": "./dist/esm/index.d.ts",
+      "import": "./dist/esm/index.js",
+      "require": "./dist/cjs/index.cjs"
     }
   },
   "scripts": {
     "dev": "tsc --watch",
-    "build": "tsc",
+    "build:es": "tsc",
+    "build:cjs": "tsc --project tsconfig.cjs.json",
+    "build": "npm run build:es && npm run build:cjs",
     "preview": "node dist/index.js",
     "check:types": "tsc --noEmit"
   },
