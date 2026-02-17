@@ -3,6 +3,25 @@ import * as fs from 'node:fs'
 import * as path from 'node:path'
 import type { Reporter, TestCase, TestModule, TestSuite } from 'vitest/node'
 
+const printReport = (report: Report) => {
+  if (report.flakyTests.length === 0) {
+    console.log('✅ [vitest-reporter-flakiness] No flaky tests found.')
+    return
+  }
+
+  console.warn(
+    `❌ [vitest-reporter-flakiness] Found ${report.flakyTests.length} flaky test(s):`,
+  )
+  for (const flakyTest of report.flakyTests) {
+    console.warn(
+      `- ${flakyTest.moduleName} > ${[
+        ...flakyTest.suitePath,
+        flakyTest.testName,
+      ].join(' > ')} (retries: ${flakyTest.retries})`,
+    )
+  }
+}
+
 const writeReport = (report: Report, outputFile: string) => {
   // Make it human-readable by pretty-printing the JSON with an indentation of 2 spaces
   const content = JSON.stringify(report, null, 2)
@@ -126,6 +145,10 @@ export type FlakyTestsReporterOptions = {
    * If specified, this function is always called with the report data, even if no flaky tests were found. In that case, the `flakyTests` array in the report will be empty.
    */
   onReport?: (data: Report) => void
+  /**
+   * Disables all console output, including warnings about retry not being set and the report of flaky tests.
+   */
+  disableConsoleOutput?: boolean
 }
 
 class Index implements Reporter {
@@ -170,6 +193,9 @@ class Index implements Reporter {
     const foundFlakyTests = flakyTests.length > 0
     if (foundFlakyTests && this.options.outputFile) {
       writeReport(report, this.options.outputFile)
+    }
+    if (!this.options.disableConsoleOutput) {
+      printReport(report)
     }
     this.options.onReport?.(report)
   }
