@@ -24,4 +24,4 @@ jobs:
       - name: Build
         run: npm run build --workspace=vite-reporter-flakiness
       - name: Test Build Output
-        run: npm run build --workspace=@repo/vite-reporter-flakiness-tests
+        run: npm run test --workspace=@repo/vite-reporter-flakiness-tests
