@@ -18,11 +18,9 @@ jobs:
           registry-url: 'https://registry.npmjs.org'
       - name: Install
         run: npm install --frozen-lockfile
-      - name: Check Code Formatting
-        run: npm run check:formatting
       - name: Build library
         run: npm run build --workspace=vite-reporter-flakiness
-      - name: Tests
+      - name: Run tests to generate a flakiness report
         run: npm run test --workspace=@repo/app-with-ci
       - name: Report flakiness
         run: |

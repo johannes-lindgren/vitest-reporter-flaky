@@ -2,9 +2,7 @@
   "flakyTests": [
     {
       "moduleName": "src/with-flakiness.test.ts",
-      "suitePath": [
-        "flaky tests"
-      ],
+      "suitePath": ["flaky tests"],
       "testName": "is a flaky test",
       "retries": 2
     }
