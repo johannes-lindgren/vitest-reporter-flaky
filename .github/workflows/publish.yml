@@ -36,9 +36,11 @@ jobs:
       - name: Get package version
         id: pkg
         run: echo "version=$(node -p 'require(\"./packages/vitest-reporter-flakiness/package.json\").version')" >> $GITHUB_OUTPUT
-      - name: Publish to NPM (prerelease)
-        if: ${{ contains(steps.pkg.outputs.version, '-') }}
-        run: NODE_AUTH_TOKEN="" npm publish --workspace=vitest-reporter-flakiness --tag next
-      - name: Publish to NPM (stable)
-        if: ${{ !contains(steps.pkg.outputs.version, '-') }}
-        run: NODE_AUTH_TOKEN="" npm publish --workspace=vitest-reporter-flakiness
+      - name: Publish to NPM
+        run: |
+          TAG=latest
+          if [[ "${{ steps.pkg.outputs.version }}" == *-* ]]; then
+            TAG=next
+          fi
+          echo "Publishing with tag: $TAG"
+          NODE_AUTH_TOKEN="" npm publish --workspace=vitest-reporter-flakiness --tag $TAG
