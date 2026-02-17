@@ -18,13 +18,7 @@ jobs:
       - name: Check Code Formatting
         run: npm run check:formatting --workspace=vite-reporter-flakiness
       - name: Check Types
-        run: npm run check:circular-dependencies --workspace=vite-reporter-flakiness
-      - name: Check Types
         run: npm run check:types --workspace=vite-reporter-flakiness
-      #        No linters for this repo
-      #      - name: Lint
-      #        run: |
-      #          npm run lint
       - name: Test
         run: npm run test --workspace=vite-reporter-flakiness
       - name: Build
