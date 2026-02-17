@@ -23,31 +23,21 @@ Install the package:
 npm install vitest-reporter-flakiness --save-dev
 ```
 
-Ensure that you have retries enabled in your Vitest configuration for the reporter to work effectively:
+Add the reporter to your Vitest configuration. Ensure that you have retries enabled in your Vitest configuration for the reporter to work effectively:
 
-```js// vitest.config.js
-import { defineConfig } from 'vitest/config'
-
-export default defineConfig({
-  test: {
-    // Adjust the number of retries as needed
-    retries: 2,
-  },
-})
-```
-
-Add the reporter to your Vitest configuration:
-
-```js
+```ts
 // vitest.config.js
 import { defineConfig } from 'vitest/config'
-import { FlakinessReporter } from 'vitest-reporter-flakiness'
+import FlakinessReporter from 'vitest-reporter-flakiness'
 
 export default defineConfig({
   test: {
+    // Important: to be able to report flaky tests, you need to set a retry count.
+    //  This is because a test is only considered flaky if it passed but had retries.
+    retry: 3,
     reporters: [
       new FlakinessReporter({
-        outputFile: 'reports/flaky-tests-report.json',
+        outputFile: 'reports/flaky-tests.json',
       }),
     ],
   },
@@ -55,26 +45,23 @@ export default defineConfig({
 ```
 
 In CI, trigger an alert if the reporter generated the report file; for example, in GitHub actions, the workflow
-could include a step like this:
+could include steps like this:
 
 ```yaml
+- name: Run tests
+  run: npm test
 - name: Report flaky tests
   run: |
-    echo "=== Running flakiness reporter ==="
-    # Simulate flakiness detection (replace with actual command)
-    if [ -f "examples/app-with-ci/reports/flaky-tests.json" ]; then
-      echo "Flaky tests detected:"
+    if [ -f "reports/flaky-tests.json" ]; then
       # TODO: this is where you would want to send a notification or create an issue based on the flakiness report.
       echo "Artifacts: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
-    else
-      echo "No flaky tests detected."
     fi
 - name: Upload flaky test report artifact
   if: always()
   uses: actions/upload-artifact@v4
   with:
     name: flaky-tests-report
-    path: examples/app-with-ci/reports/flaky-tests.json
+    path: reports/flaky-tests.json
     if-no-files-found: ignore
 ```
 
@@ -84,6 +71,14 @@ See the examples here:
 
 - [Example app](https://github.com/johannes-lindgren/vitest-reporter-flakiness/blob/main/examples/app-with-ci/vitest.config.ts)
 - [Example workflow](https://github.com/johannes-lindgren/vitest-reporter-flakiness/blob/main/.github/workflows/example.yml)
+
+## API
+
+The `FlakinessReporter` accepts an options object with the following (optional) properties:
+
+- `outputFile` (`string`): The path to the output file where the flakiness report will be saved.
+- `disableConsoleOutput` (`boolean`): If set to `true`, the reporter will not output flaky test information to the console. Default is `false`.
+- `onReport` (`(report: Report) => void`): A callback function that will be called with the
 
 <br/>
 <div align="center">

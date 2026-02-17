@@ -24,14 +24,9 @@ jobs:
         run: npm run test --workspace=@repo/app-with-ci
       - name: Report flaky tests
         run: |
-          echo "=== Running flakiness reporter ==="
-          # Simulate flakiness detection (replace with actual command)
           if [ -f "examples/app-with-ci/reports/flaky-tests.json" ]; then
-            echo "Flaky tests detected:"
             # TODO: this is where you would want to send a notification or create an issue based on the flakiness report.
             echo "Artifacts: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
-          else
-            echo "No flaky tests detected."
           fi
       - name: Upload flaky test report artifact
         if: always()

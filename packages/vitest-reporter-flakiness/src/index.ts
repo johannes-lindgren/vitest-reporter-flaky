@@ -3,6 +3,29 @@ import * as fs from 'node:fs'
 import * as path from 'node:path'
 import type { Reporter, TestCase, TestModule, TestSuite } from 'vitest/node'
 
+const packageName = 'vitest-reporter-flakiness'
+
+const printReport = (report: Report) => {
+  if (report.flakyTests.length === 0) {
+    // Don't print anything. A "success" could be misleading, since the report will only report flaky tests and don't care about whether the test suit failed or not.
+    return
+  }
+
+  console.warn(
+    `⚠️ [${packageName}] Found ${report.flakyTests.length} flaky test(s):`,
+  )
+  for (const flakyTest of report.flakyTests) {
+    console.warn(
+      `- ${flakyTest.moduleName} > ${[
+        ...flakyTest.suitePath,
+        flakyTest.testName,
+      ]
+        .map((it) => JSON.stringify(it))
+        .join(' > ')} (retries: ${flakyTest.retries})`,
+    )
+  }
+}
+
 const writeReport = (report: Report, outputFile: string) => {
   // Make it human-readable by pretty-printing the JSON with an indentation of 2 spaces
   const content = JSON.stringify(report, null, 2)
@@ -126,7 +149,14 @@ export type FlakyTestsReporterOptions = {
    * If specified, this function is always called with the report data, even if no flaky tests were found. In that case, the `flakyTests` array in the report will be empty.
    */
   onReport?: (data: Report) => void
+  /**
+   * Disables all console output, including warnings about retry not being set and the report of flaky tests.
+   */
+  disableConsoleOutput?: boolean
 }
+
+// Not exported by vitest
+type Vitest = Parameters<Exclude<Reporter['onInit'], undefined>>[0]
 
 class Index implements Reporter {
   private options: FlakyTestsReporterOptions
@@ -135,16 +165,16 @@ class Index implements Reporter {
     this.options = options
   }
 
-  onInit(vitest: any) {
-    // TODO verify that retry has been set
-    // const project = vitest.projects?.[0]
-    // const retry = project?.globalConfig?.retry ?? 0
-    //
-    // if (retry === 0) {
-    //   console.warn(
-    //     '[FlakyTestsReporter] Warning: retry is set to 0, flaky tests will not be detected. Please set retry to a value greater than 0 in your Vitest config.',
-    //   )
-    // }
+  onInit(vitest: Vitest) {
+    const anyRetry0 = vitest.projects?.some(
+      (project) => (project?.globalConfig?.retry ?? 0) < 1,
+    )
+
+    if (anyRetry0 && !this.options.disableConsoleOutput) {
+      console.warn(
+        `⚠️ [${packageName}] Warning: \`test.retry\ in the vitest configuration is set to 0, which means that flaky tests will not be detected. Please set retry to a value greater than 0 in your Vitest config.`,
+      )
+    }
   }
 
   onTestRunEnd(testModules: ReadonlyArray<TestModule>) {
@@ -170,6 +200,9 @@ class Index implements Reporter {
     const foundFlakyTests = flakyTests.length > 0
     if (foundFlakyTests && this.options.outputFile) {
       writeReport(report, this.options.outputFile)
+    }
+    if (!this.options.disableConsoleOutput) {
+      printReport(report)
     }
     this.options.onReport?.(report)
   }

@@ -9,6 +9,10 @@ export default defineConfig({
     reporters: [
       new FlakinessReporter({
         outputFile: 'reports/flaky-tests.json',
+        // disableConsoleOutput: true,
+        // onReport: (report) => {
+        //   // Do something
+        // },
       }),
     ],
   },
