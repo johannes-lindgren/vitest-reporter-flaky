@@ -1,0 +1,13 @@
+{
+  "name": "vite-reporter-flaky-root",
+  "version": "0.0.0",
+  "private": true,
+  "license": "MIT",
+  "scripts": {},
+  "workspaces": [
+    "packages/*"
+  ],
+  "devDependencies": {
+    "prettier": "^3.8.1"
+  }
+}

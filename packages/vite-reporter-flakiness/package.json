@@ -1,0 +1,59 @@
+{
+  "name": "vite-reporter-flakiness",
+  "version": "0.0.0-beta.0",
+  "private": false,
+  "description": "A Vitest reporter that identifies and reports flaky tests by tracking test retries and their outcomes.",
+  "author": {
+    "name": "Johannes Lindgren"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/johannes-lindgren/vite-reporter-flakiness"
+  },
+  "bugs": {
+    "url": "https://github.com/johannes-lindgren/vite-reporter-flakiness/issues"
+  },
+  "keywords": [
+    "vitest",
+    "unit testing",
+    "flakiness",
+    "ci"
+  ],
+  "license": "MIT",
+  "sideEffects": false,
+  "files": [
+    "dist",
+    "logo.webp"
+  ],
+  "type": "module",
+  "module": "./dist/index.js",
+  "main": "./dist/index.cjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "require": "./dist/index.cjs",
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "dev": "vite build --watch",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "test": "vitest --pass-with-no-tests",
+    "check:types": "tsc",
+    "check:circular-dependencies": "dpdm  -T --exit-code circular:1 ./src/index.ts",
+    "check:formatting": "prettier . --check",
+    "format": "prettier . --write"
+  },
+  "workspaces": [
+    "packages/*"
+  ],
+  "devDependencies": {
+    "prettier": "3.1.0",
+    "typescript": "^5.5.4",
+    "vite": "^7.3.1",
+    "vite-plugin-dts": "^4.2.3",
+    "vitest": "^4.0.18"
+  }
+}

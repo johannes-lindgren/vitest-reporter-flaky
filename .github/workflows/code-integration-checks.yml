@@ -1,0 +1,27 @@
+name: Code Integration Checks
+on: ['push']
+jobs:
+  integration-checks:
+    runs-on: ubuntu-latest
+    name: Code Inspection
+    steps:
+      - name: Check out
+        uses: actions/checkout@v3
+      - name: Set up node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 22
+          cache: 'npm'
+          registry-url: 'https://registry.npmjs.org'
+      - name: Install
+        run: npm install --frozen-lockfile
+      - name: Check Code Formatting
+        run: npm run check:formatting --workspace=vite-reporter-flakiness
+      - name: Check Types
+        run: npm run check:types --workspace=vite-reporter-flakiness
+      - name: Test
+        run: npm run test --workspace=vite-reporter-flakiness
+      - name: Build
+        run: npm run build --workspace=vite-reporter-flakiness
+      - name: Test Build Output
+        run: npm run build --workspace=test-app

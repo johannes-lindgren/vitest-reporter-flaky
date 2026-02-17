@@ -13,7 +13,6 @@
 
 Coming soon...
 
-
 <br/>
 <div align="center">
   <em>By <a href="https://github.com/johannes-lindgren">@johannes-lindgren</a></em>
