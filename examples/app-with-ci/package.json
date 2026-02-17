@@ -8,6 +8,6 @@
   },
   "devDependencies": {
     "vitest": "^4.0.18",
-    "vite-reporter-flakiness": "file:../vite-reporter-flakiness"
+    "vitest-reporter-flakiness": "file:../vitest-reporter-flakiness"
   }
 }

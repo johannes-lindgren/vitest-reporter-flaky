@@ -20,10 +20,10 @@ jobs:
       - name: Check Code Formatting
         run: npm run check:formatting
       - name: (lib) Check Types
-        run: npm run check:types --workspace=vite-reporter-flakiness
+        run: npm run check:types --workspace=vitest-reporter-flakiness
       - name: Build
-        run: npm run build --workspace=vite-reporter-flakiness
+        run: npm run build --workspace=vitest-reporter-flakiness
       - name: (tests) check types
-        run: npm run check:types --workspace=@repo/vite-reporter-flakiness-tests
+        run: npm run check:types --workspace=@repo/vitest-reporter-flakiness-tests
       - name: Tests
-        run: npm run test --workspace=@repo/vite-reporter-flakiness-tests
+        run: npm run test --workspace=@repo/vitest-reporter-flakiness-tests

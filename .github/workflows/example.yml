@@ -19,7 +19,7 @@ jobs:
       - name: Install
         run: npm install --frozen-lockfile
       - name: Build library
-        run: npm run build --workspace=vite-reporter-flakiness
+        run: npm run build --workspace=vitest-reporter-flakiness
       - name: Run tests to generate a flakiness report
         run: npm run test --workspace=@repo/app-with-ci
       - name: Report flaky tests

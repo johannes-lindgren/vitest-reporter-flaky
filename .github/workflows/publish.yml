@@ -23,12 +23,12 @@ jobs:
       - name: Install
         run: npm install --frozen-lockfile
       - name: Build
-        run: npm run build --workspace=vite-reporter-flakiness
+        run: npm run build --workspace=vitest-reporter-flakiness
       - name: Copy README into the workspace
         run: |
-          cp README.md packages/vite-reporter-flakiness/
-          cp LICENSE packages/vite-reporter-flakiness/
+          cp README.md packages/vitest-reporter-flakiness/
+          cp LICENSE packages/vitest-reporter-flakiness/
       - name: Publish to NPM
-        run: npm publish --access public --provenance --workspace=vite-reporter-flakiness
+        run: npm publish --access public --provenance --workspace=vitest-reporter-flakiness
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
