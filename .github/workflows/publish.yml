@@ -22,6 +22,10 @@ jobs:
           registry-url: 'https://registry.npmjs.org'
       - name: Install
         run: npm install --frozen-lockfile
+      - name: Check Code Formatting
+        run: npm run check:formatting
+      - name: Check Types
+        run: npm run check:types --workspace=vitest-reporter-flakiness
       - name: Build
         run: npm run build --workspace=vitest-reporter-flakiness
       - name: Copy README into the workspace
@@ -30,5 +34,3 @@ jobs:
           cp LICENSE packages/vitest-reporter-flakiness/
       - name: Publish to NPM
         run: npm publish --access public --provenance --workspace=vitest-reporter-flakiness
-        env:
-          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
