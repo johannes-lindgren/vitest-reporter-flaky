@@ -117,15 +117,6 @@ const getTestPath = (
   }
 }
 
-/**
- * A test is considered flaky if it passed but had retries.
- * @param task
- */
-const isFlaky = (task: TaskResult): boolean => {
-  const retries = task.retryCount ?? 0
-  return task.state === 'pass' && retries > 0
-}
-
 export type FlakyTest = {
   moduleName: string
   // The last element of the path is the test name, the rest are suite names
@@ -181,9 +172,10 @@ class Index implements Reporter {
     const flakyTests: FlakyTest[] = []
     for (const module of testModules) {
       for (const test of module.children.allTests()) {
-        const task = getTestTask(test)
-        const retries = task.result.retryCount ?? 0
-        if (isFlaky(task.result)) {
+        const result = test.result()
+        const retries = test.diagnostic()?.retryCount ?? 0
+        const isFlaky = result.state === 'passed' && retries > 0
+        if (isFlaky) {
           const path = getTestPath(test)
           flakyTests.push({
             ...path,
