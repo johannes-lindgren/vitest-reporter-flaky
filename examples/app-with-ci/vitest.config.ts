@@ -1,5 +1,5 @@
 import { defineConfig } from 'vitest/config'
-import FlakinessReporter from 'vite-reporter-flakiness'
+import FlakinessReporter from 'vitest-reporter-flakiness'
 
 export default defineConfig({
   test: {

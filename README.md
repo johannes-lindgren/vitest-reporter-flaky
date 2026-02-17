@@ -1,12 +1,12 @@
 <div align="center">
-  <h1 align="center">vite-reporter-flakiness</h1>
+  <h1 align="center">vitest-reporter-flakiness</h1>
   <p align="center">
    Identify and report flaky tests
   </p>
 </div>
 
 <p align="center">
-<a href="https://github.com/johannes-lindgren/vite-reporter-flakiness/actions/workflows/code-integration-checks.yml" rel="nofollow"><img src="https://img.shields.io/badge/Tests-passing-yellow0green.svg" alt="Tests CI stats"></a>
+<a href="https://github.com/johannes-lindgren/vitest-reporter-flakiness/actions/workflows/code-integration-checks.yml" rel="nofollow"><img src="https://img.shields.io/badge/Tests-passing-yellow0green.svg" alt="Tests CI stats"></a>
 <a href="https://opensource.org/licenses/MIT" rel="nofollow"><img src="https://img.shields.io/badge/Licence-MIT-green" alt="License"></a>
 <a href="https://github.com/johannes-lindgren" rel="nofollow"><img src="https://img.shields.io/badge/Author-@johannes--lindgren-blue.svg" alt="Created by Johannes Lindgren"></a>
 </p>
@@ -20,7 +20,7 @@ A test is considered flaky if it fails in at least one run and passes in a retry
 Install the package:
 
 ```bash
-npm install vite-reporter-flakiness --save-dev
+npm install vitest-reporter-flakiness --save-dev
 ```
 
 Ensure that you have retries enabled in your Vitest configuration for the reporter to work effectively:
@@ -41,7 +41,7 @@ Add the reporter to your Vitest configuration:
 ```js
 // vitest.config.js
 import { defineConfig } from 'vitest/config'
-import { FlakinessReporter } from 'vite-reporter-flakiness'
+import { FlakinessReporter } from 'vitest-reporter-flakiness'
 
 export default defineConfig({
   test: {
