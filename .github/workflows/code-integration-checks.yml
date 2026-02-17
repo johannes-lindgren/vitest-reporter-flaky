@@ -8,15 +8,15 @@ jobs:
     name: Code Inspection
     steps:
       - name: Check out
-        uses: actions/checkout@v3
+        uses: actions/checkout@v6
       - name: Set up node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v6
         with:
-          node-version: 22
+          node-version: 24
           cache: 'npm'
           registry-url: 'https://registry.npmjs.org'
       - name: Install
-        run: npm install --frozen-lockfile
+        run: npm ci
       - name: Check Code Formatting
         run: npm run check:formatting
       - name: (lib) Check Types
