@@ -9,7 +9,6 @@ const writeReport = (report: Report, outputFile: string) => {
   const filePath = path.resolve(outputFile)
   // Ensure directory exists
   fs.mkdirSync(path.dirname(filePath), { recursive: true })
-  console.log('writing to', filePath)
   fs.writeFileSync(filePath, content, {
     encoding: 'utf8',
   })
