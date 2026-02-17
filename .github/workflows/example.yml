@@ -22,22 +22,21 @@ jobs:
         run: npm run build --workspace=vite-reporter-flakiness
       - name: Run tests to generate a flakiness report
         run: npm run test --workspace=@repo/app-with-ci
-      - name: Report flakiness
+      - name: Report flaky tests
         run: |
           echo "=== Running flakiness reporter ==="
           # Simulate flakiness detection (replace with actual command)
           if [ -f "examples/app-with-ci/reports/flaky-tests.json" ]; then
             echo "Flaky tests detected:"
-            # [Placeholder] This is where you would want to send a notification or create an issue based on the flakiness report.
+            # TODO: this is where you would want to send a notification or create an issue based on the flakiness report.
             echo "Artifacts: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
           else
             echo "No flaky tests detected."
           fi
-
-      - name: Upload flakiness report artifact
+      - name: Upload flaky test report artifact
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: flaky-tests-report
           path: examples/app-with-ci/reports/flaky-tests.json
-          if-no-files-found: warn
+          if-no-files-found: ignore
