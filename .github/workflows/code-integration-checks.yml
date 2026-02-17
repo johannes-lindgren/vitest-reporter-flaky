@@ -16,12 +16,12 @@ jobs:
       - name: Install
         run: npm install --frozen-lockfile
       - name: Check Code Formatting
-        run: npm run check:formatting --workspace=vite-reporter-flakiness
-      - name: Check Types
+        run: npm run check:formatting
+      - name: (lib) Check Types
         run: npm run check:types --workspace=vite-reporter-flakiness
-      - name: Test
-        run: npm run test --workspace=vite-reporter-flakiness
       - name: Build
         run: npm run build --workspace=vite-reporter-flakiness
-      - name: Test Build Output
-        run: npm run build --workspace=test-app
+      - name: (tests) check types
+        run: npm run check:types --workspace=@repo/vite-reporter-flakiness-tests
+      - name: Tests
+        run: npm run test --workspace=@repo/vite-reporter-flakiness-tests

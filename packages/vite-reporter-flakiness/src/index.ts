@@ -1,1 +1,2 @@
-export const dummy = 1
+export * from './FlakyTestsReporter'
+export { default } from './FlakyTestsReporter'

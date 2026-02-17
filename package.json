@@ -3,7 +3,10 @@
   "version": "0.0.0",
   "private": true,
   "license": "MIT",
-  "scripts": {},
+  "scripts": {
+    "check:formatting": "prettier . --check",
+    "format": "prettier . --write"
+  },
   "workspaces": [
     "packages/*"
   ],
