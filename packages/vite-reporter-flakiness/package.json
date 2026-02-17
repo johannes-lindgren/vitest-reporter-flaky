@@ -26,22 +26,20 @@
     "logo.webp"
   ],
   "type": "module",
-  "module": "./dist/index.js",
-  "main": "./dist/index.cjs",
+  "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
-      "require": "./dist/index.cjs",
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
     }
   },
   "scripts": {
-    "dev": "vite build --watch",
-    "build": "vite build",
-    "preview": "vite preview",
+    "dev": "tsc --watch",
+    "build": "tsc",
+    "preview": "node dist/index.js",
     "test": "vitest",
-    "check:types": "tsc",
+    "check:types": "tsc --noEmit",
     "check:formatting": "prettier . --check",
     "format": "prettier . --write"
   },
@@ -51,8 +49,6 @@
   "devDependencies": {
     "prettier": "3.1.0",
     "typescript": "^5.5.4",
-    "vite": "^7.3.1",
-    "vite-plugin-dts": "^4.2.3",
     "vitest": "^4.0.18"
   }
 }

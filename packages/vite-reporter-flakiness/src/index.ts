@@ -7,7 +7,12 @@ const writeReport = (report: Report, ouputFile: string, pretty: boolean) => {
   const content = pretty
     ? JSON.stringify(report, null, 2)
     : JSON.stringify(report)
-  fs.writeFileSync(path.resolve(ouputFile), content)
+  const filePath = path.resolve(ouputFile)
+  // Ensure directory exists
+  fs.mkdirSync(path.dirname(filePath), { recursive: true })
+  fs.writeFileSync(filePath, content, {
+    encoding: 'utf8',
+  })
 }
 
 type FlakyTest = {
