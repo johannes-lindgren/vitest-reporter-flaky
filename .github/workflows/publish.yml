@@ -32,6 +32,15 @@ jobs:
         run: |
           cp README.md packages/vitest-reporter-flakiness/
           cp LICENSE packages/vitest-reporter-flakiness/
-      # TODO remove when this is fixed: https://github.com/actions/setup-node/issues/1440
-      - name: Publish to NPM
+      - name: Get package version
+        id: pkg
+        run: echo "version=$(node -p 'require(\"./packages/vitest-reporter-flakiness/package.json\").version')" >> $GITHUB_OUTPUT
+      - name: Publish to NPM (prerelease)
+        if: ${{ contains(steps.pkg.outputs.version, '-') }}
+        run: NODE_AUTH_TOKEN="" npm publish --workspace=vitest-reporter-flakiness --tag next
+      - name: Publish to NPM (stable)
+        if: ${{ !contains(steps.pkg.outputs.version, '-') }}
         run: NODE_AUTH_TOKEN="" npm publish --workspace=vitest-reporter-flakiness
+      # TODO remove when this is fixed: https://github.com/actions/setup-node/issues/1440
+      # - name: Publish to NPM
+      #   run: NODE_AUTH_TOKEN="" npm publish --workspace=vitest-reporter-flakiness --tag next
