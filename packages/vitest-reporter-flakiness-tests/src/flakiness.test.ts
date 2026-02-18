@@ -61,7 +61,7 @@ const getOutputFilePath = () => {
   return path.resolve(outputFolder, reportName)
 }
 
-const consolePattern = '[vitest-reporter-flakiness]'
+const packageName = 'vitest-reporter-flakiness'
 
 describe('flakiness reporting', () => {
   describe('file output', () => {
@@ -206,7 +206,7 @@ describe('flakiness reporting', () => {
         .mockImplementation(() => {})
       await runVitest(alwaysSuccessful, options, undefined)
       expect(consoleWarnSpy).toHaveBeenCalledWith(
-        expect.stringContaining(consolePattern),
+        expect.stringContaining(packageName),
       )
       consoleWarnSpy.mockRestore()
     })
@@ -216,7 +216,7 @@ describe('flakiness reporting', () => {
         .mockImplementation(() => {})
       await runVitest(alwaysSuccessful, options, 0)
       expect(consoleWarnSpy).toHaveBeenCalledWith(
-        expect.stringContaining(consolePattern),
+        expect.stringContaining(packageName),
       )
       consoleWarnSpy.mockRestore()
     })
@@ -226,7 +226,7 @@ describe('flakiness reporting', () => {
         .mockImplementation(() => {})
       await runVitest(alwaysSuccessful, options, 1)
       expect(consoleWarnSpy).not.toHaveBeenCalledWith(
-        expect.stringContaining(consolePattern),
+        expect.stringContaining(packageName),
       )
       consoleWarnSpy.mockRestore()
     })
@@ -236,7 +236,7 @@ describe('flakiness reporting', () => {
         .mockImplementation(() => {})
       await runVitest(alwaysSuccessful, options, 2)
       expect(consoleWarnSpy).not.toHaveBeenCalledWith(
-        expect.stringContaining(consolePattern),
+        expect.stringContaining(packageName),
       )
       consoleWarnSpy.mockRestore()
     })
@@ -253,7 +253,7 @@ describe('flakiness reporting', () => {
       const consoleLogSpy = await run()
       // Contains the pattern
       expect(consoleLogSpy).toHaveBeenCalledWith(
-        expect.stringContaining(consolePattern),
+        expect.stringContaining(packageName),
       )
       consoleLogSpy.mockRestore()
     })
